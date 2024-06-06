@@ -90,7 +90,7 @@
     <button id="saved">View Saved Data</button>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        // Function to navigate to saved data page
+
         const saved = document.getElementById('saved')
         saved.addEventListener('click',()=>{
             window.location.href = '/user';
@@ -98,13 +98,9 @@
 
         const form = document.getElementById('myForm');
         form.addEventListener('submit', (event) => {
-            // Prevent the default form submission behavior
             event.preventDefault();
-            
-            // Perform your form submission logic here, for example with Axios
             axios.post('/sign_up', formData)
                 .then((response) => {
-                    // Reset the form after successful submission
                     form.reset();
                 })
                 .catch((error) => {

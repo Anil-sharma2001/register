@@ -59,13 +59,12 @@
      
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        // Function to fetch user data
         function fetchUserData() {
             axios.get('/getUser')
                 .then(function(response) {
                     const userData = response.data;
                     const userDataBody = document.querySelector('#userData tbody');
-                    userDataBody.innerHTML = ''; // Clear previous data
+                    userDataBody.innerHTML = ''; 
 
                     userData.forEach(function(user) {
                         const tr = document.createElement('tr');
@@ -88,8 +87,6 @@
                     console.error('Error:', error);
                 });
         }
-
-        // Initial fetch of user data
         fetchUserData();
     </script>
 

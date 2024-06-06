@@ -17,7 +17,6 @@ const db = mongoose.connection;
 db.on('error', () => console.log('error'));
 db.once('open', () => console.log('connected'));
 
-// Define Schema
 const userSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -31,19 +30,17 @@ const userSchema = new mongoose.Schema({
     password: String
 });
 
-// Create Model
 const User = mongoose.model('User', userSchema);
 
 app.get('/getUser', (req, res) => {
     User.find()
-        .then(users => res.json(users)) // Send users as JSON response
+        .then(users => res.json(users)) 
         .catch(err => {
             console.log(err);
-            res.status(500).json({ error: 'Internal server error' }); // Handle error
+            res.status(500).json({ error: 'Internal server error' }); 
         });
 });
 
-// Define regular expressions for validation
 const mobileValid = /^\d{10}$/;
 const loginIdValid = /^[a-zA-Z0-9]{8}$/;
 const passwordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -51,38 +48,29 @@ const passwordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$
 app.post("/sign_up", async (req, res) => {
     const { mobile, login, password } = req.body;
 
-    // Validate mobile number
     if (!mobileValid.test(mobile)) {
         return res.status(400).send('Invalid mobile number');
     }
 
-    // Validate login ID
     if (!loginIdValid.test(login)) {
         return res.status(400).send('Invalid login ID');
     }
 
-    // Validate password
     if (!passwordValid.test(password)) {
         return res.status(400).send('Invalid password');
     }
 
     try {
-        // Check if a user with the provided login ID already exists
         const existingUser = await User.findOne({ login });
 
-        // If a user with the same login ID exists
         if (existingUser) {
-            // Check if the password matches
             if (existingUser.password === password) {
-                // Password matches, return error
                 return res.status(400).send('User with the same login ID and password already exists');
             } else {
-                // Password does not match, return error
                 return res.status(400).send('User with the same login ID already exists');
             }
         }
 
-        // All validations passed, proceed with saving to database  
         const newUser = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -106,7 +94,7 @@ app.post("/sign_up", async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.set("Access-Control-Allow-Origin", "*"); // Set correct CORS header
+    res.set("Access-Control-Allow-Origin", "*"); 
     return res.redirect('index.html');
 });
 
