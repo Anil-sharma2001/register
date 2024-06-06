@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"],
+        #saved {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover,
+        #saved:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Enter your details</h2>
+    <form id ='myform' method="post" action="/sign_up">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required><br><br>
+        
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" required><br><br>
+        
+        <label for="mobile">Mobile No</label>
+        <input type="text" id="mobile" name="mobile" required><br><br>
+        
+        <label for="email">Email ID</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="street">Street</label>
+        <input type="text" id="street" name="street" required><br><br>
+        
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" required><br><br> 
+        
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" required><br><br>
+        
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country" required><br><br>
+        
+        <label for="loginId">Login ID</label>
+        <input type="text" id="loginId" name="login" required><br><br>
+        
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Submit" id="submit">
+    </form>
+    <br>
+    <button id="saved">View Saved Data</button>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Function to navigate to saved data page
+        const saved = document.getElementById('saved')
+        saved.addEventListener('click',()=>{
+            window.location.href = '/user';
+        })
+
+        const form = document.getElementById('myForm');
+        form.addEventListener('submit', (event) => {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            
+            // Perform your form submission logic here, for example with Axios
+            axios.post('/sign_up', formData)
+                .then((response) => {
+                    // Reset the form after successful submission
+                    form.reset();
+                })
+                .catch((error) => {
+                    console.error('Error submitting form:', error);
+                });
+        });   
+    </script>
+</body>
+</html>
