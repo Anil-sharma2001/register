@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     state: String,
     country: String,
     login: String,
-    password: String
+    password: String,
 });
 
 const User = mongoose.model('User', userSchema);
@@ -41,31 +41,18 @@ app.get('/getUser', (req, res) => {
         });
 });
 
-const mobileValid = /^\d{10}$/;
-const loginIdValid = /^[a-zA-Z0-9]{8}$/;
-const passwordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
 app.post("/sign_up", async (req, res) => {
-    const { mobile, login, password } = req.body;
+    const { login, password } = req.body;
 
-    if (!mobileValid.test(mobile)) {
-        return res.status(400).send('Invalid mobile number');
-    }
-
-    if (!loginIdValid.test(login)) {
-        return res.status(400).send('Invalid login ID');
-    }
-
-    if (!passwordValid.test(password)) {
-        return res.status(400).send('Invalid password');
-    }
+    
 
     try {
         const existingUser = await User.findOne({ login });
 
         if (existingUser) {
             if (existingUser.password === password) {
-                return res.status(400).send('User with the same login ID and password already exists');
+                res.redirect('login.html')
+                // return res.status(400).send('User with the same login ID and password already exists');
             } else {
                 return res.status(400).send('User with the same login ID already exists');
             }
@@ -81,12 +68,12 @@ app.post("/sign_up", async (req, res) => {
             state: req.body.state,
             country: req.body.country,
             login: req.body.login,
-            password: req.body.password
+            password: req.body.password,
         });
 
         await newUser.save();
         console.log('Insertion successful');
-        res.status(200).send('Submission successful!');
+        res.redirect('success.html')
     } catch (error) {
         console.error('Error occurred during submission:', error);
         res.status(500).send('Error occurred during submission.');
